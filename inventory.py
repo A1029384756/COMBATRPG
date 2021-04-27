@@ -1,5 +1,5 @@
 from weapons import Sword, Club, Fists
-from consumables import HealthPotion
+from consumables import HealthPotion, VampirismAntidote
 
 def findInList(item, listOfItems):
   for i, sublist in enumerate(listOfItems):
@@ -8,7 +8,7 @@ def findInList(item, listOfItems):
   return -1
 
 weapons = {'sword' : Sword, 'club' : Club, 'fists' : Fists}
-consumables = {'health potion' : HealthPotion}
+consumables = {'health potion' : HealthPotion, 'vampirism antidote' : VampirismAntidote}
 
 class Inventory(object):
   def __init__(self):
@@ -76,10 +76,13 @@ class Inventory(object):
         if self.consumedItem.statBonus == "Health":
           print('Health increased by ' + str(self.consumedItem.bonusAmount) + '.')
           return "Health", self.consumedItem.bonusAmount
+      elif self.consumedItem.statBonus == "Cure":
+          print('You are cured of your vampiritis.')
+          return "Cure", self.consumedItem.bonusAmount
       else:
         self.consumedItem = None
         print('No Bonus')
         return " ", 0
-    
+
     except AttributeError:
       return " ", 0

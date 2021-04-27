@@ -5,12 +5,12 @@ class WorldSpace(object):
 
   enemies = [' ', 'orc', 'goblin', 'dragon', 'vampire']
 
-  consumables = [' ', 'health potion']
-  
+  consumables = [' ', 'health potion', 'vampirism antidote']
+
 
   def __init__(self, scale):
     self.scale = scale
-  
+
   def worldGen(self):
     self.world_array = [[0]*self.scale for i in range(self.scale)]
     self.enemy_array = [[0]*self.scale for i in range(self.scale)]
@@ -41,10 +41,12 @@ class WorldSpace(object):
       for p in range(int(self.scale)):
         if int(self.enemy_array[i][p]) > 98:
           self.enemy_array[i][p] = self.enemies[3]
+        elif int(self.enemy_array[i][p]) > 88:
+          self.enemy_array[i][p] = self.enemies[4]
         elif int(self.enemy_array[i][p]) > 78:
           self.enemy_array[i][p] = self.enemies[2]
         elif int(self.enemy_array[i][p]) > 50:
-          self.enemy_array[i][p] = self.enemies[1]     
+          self.enemy_array[i][p] = self.enemies[1]
         else:
           self.enemy_array[i][p] = self.enemies[0]
 
@@ -58,11 +60,13 @@ class WorldSpace(object):
   def consumablesAssignment(self):
     for i in range(int(self.scale)):
       for p in range(int(self.scale)):
-        for j in range(int(len(self.consumables))):
-          if int(self.drops_array[i][p][j]) > 2:
-            self.drops_array[i][p][j] = self.consumables[1]
-          else:
-            self.drops_array[i][p][j] = self.consumables[0]
+        for j in range(2):
+            if int(self.drops_array[i][p][j]) > 90:
+                self.drops_array[i][p][j] = self.consumables[2]
+            elif int(self.drops_array[i][p][j]) > 75:
+                self.drops_array[i][p][j] = self.consumables[1]
+            else:
+                self.drops_array[i][p][j] = self.consumables[0]
 
   def getTerrain(self, player):
     return self.world_array[player.x][player.y]

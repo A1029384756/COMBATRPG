@@ -16,7 +16,7 @@ class Enemy(object):
     if self.stamina >= 3 and random.randrange(100) > 83:
       print('The ' + self.type + ' special attacks.')
       return self.specialAttack(player)
-      
+
     elif self.stamina >= 2 and random.randrange(100) > 68:
       print('The ' + self.type + ' attacks.')
       return self.heavyAttack()
@@ -95,5 +95,6 @@ class Vampire(Enemy):
     self.stamina -= 3
     if random.randrange(100) >= 89:
       player.infected = True
+      player.infectedDuration = random.randrange(15, 20)
       print('You have contracted vampiritis.')
     return random.randrange(1, 30) + (self.strength), random.randrange(1, 8) + (self.strength) * 2

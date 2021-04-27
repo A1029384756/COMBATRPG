@@ -34,7 +34,7 @@ class Player(object):
 
     def movement(self):
         self.counter += 1
-        
+
         print('W. | North')
         print('S. | South')
         print('D. | East')
@@ -129,10 +129,10 @@ class Player(object):
         self.paralyzeDuration -= 1
 
     def infectedAction(self):
-      if self.paralyzeDuration <= 0:
-        self.infected = False
-      else:
-        self.infectedDuration += 1
+        if self.infectedDuration <= 0 and self.infected:
+            self.infected = False
+        elif self.infected > 0:
+            self.infectedDuration -= 1
 
     def checkInventory(self):
       self.inventory.displayConsumables()
@@ -180,12 +180,14 @@ class Player(object):
         return
       else:
         print('Invalid input.')
-        
-    def applyPotions(self):
-      potiontype, bonusAmount = self.inventory.consumableEffect()
-      if potiontype == "Health":
-        self.health += bonusAmount
-        if self.health > self.maxHealth:
-          self.health = self.maxHealth
-        print("Your health: " + str(self.health))
 
+    def applyPotions(self):
+        potiontype, bonusAmount = self.inventory.consumableEffect()
+        if potiontype == "Health":
+            self.health += bonusAmount
+            if self.health > self.maxHealth:
+                self.health = self.maxHealth
+            print("Your health: " + str(self.health))
+        elif potiontype == "Cure":
+            self.infected = False
+            self.infectedDuration = 0   
