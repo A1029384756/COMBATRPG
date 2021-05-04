@@ -13,6 +13,10 @@ world.consumablesGen()
 
 
 while True:
+    if player.infected and player.infectedDuration == 0:
+        print("You have succumbed to vampiritis. Game over.")
+        break
+
     if player.counter > 10:
         world.enemyGeneration(player)
         player.counter = 0
@@ -32,6 +36,8 @@ while True:
         enemy = world.getEnemy(player)
         terrain = world.getTerrain(player)
         print('You are in the ' + terrain + '.')
+        if enemy == "vampire" and world.night == False:
+            player.decision()
         print('You see a(n) ' + enemy + '.')
         victory = combatLoop(enemy, player, world)
         if victory == True:

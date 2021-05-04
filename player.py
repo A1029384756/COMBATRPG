@@ -35,6 +35,9 @@ class Player(object):
     def movement(self):
         self.counter += 1
 
+        if self.infected:
+            self.infectedAction()
+
         print('W. | North')
         print('S. | South')
         print('D. | East')
@@ -129,9 +132,9 @@ class Player(object):
         self.paralyzeDuration -= 1
 
     def infectedAction(self):
-        if self.infectedDuration <= 0 and self.infected:
+        if self.infectedDuration <= 0:
             self.infected = False
-        elif self.infected > 0:
+        else:
             self.infectedDuration -= 1
 
     def checkInventory(self):
@@ -170,8 +173,9 @@ class Player(object):
         if itemType == 0:
           self.inventory.weapons.append(droppedItem)
         elif itemType == 1:
-          index = self.inventory.consumables[0].index(droppedItem)
-          self.inventory.consumables[index][1] += 1
+            for i in range(len(self.inventory.consumables)):
+                if self.inventory.consumables[i][0] == droppedItem:
+                    self.inventory.consumables[i][1] += 1
         print('You picked up the ' + droppedItem + '.')
         world.drops_array[self.x][self.y][itemType] = ' '
         return
@@ -190,4 +194,4 @@ class Player(object):
             print("Your health: " + str(self.health))
         elif potiontype == "Cure":
             self.infected = False
-            self.infectedDuration = 0   
+            self.infectedDuration = 0

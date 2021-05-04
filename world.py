@@ -10,6 +10,8 @@ class WorldSpace(object):
 
   def __init__(self, scale):
     self.scale = scale
+    self.time = 0
+    self.night = False
 
   def worldGen(self):
     self.world_array = [[0]*self.scale for i in range(self.scale)]
@@ -63,7 +65,7 @@ class WorldSpace(object):
         for j in range(2):
             if int(self.drops_array[i][p][j]) > 90:
                 self.drops_array[i][p][j] = self.consumables[2]
-            elif int(self.drops_array[i][p][j]) > 75:
+            elif int(self.drops_array[i][p][j]) > 70:
                 self.drops_array[i][p][j] = self.consumables[1]
             else:
                 self.drops_array[i][p][j] = self.consumables[0]
@@ -77,3 +79,14 @@ class WorldSpace(object):
   def clearEnemy(self, player):
     self.enemy_array[player.x][player.y] = ' '
     return
+
+    def timeOfDay(self):
+        self.time += 1
+        if self.time == 12:
+            print('Night has fallen, be prepared.')
+            self.night = True
+
+        if self.time == 24:
+            print("Day has arrived.")
+            self.night = False
+            self.time = 0
