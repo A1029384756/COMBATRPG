@@ -86,3 +86,6 @@ class Inventory(object):
 
     except AttributeError:
       return " ", 0
+
+    except TypeError:
+        return " ", 0
