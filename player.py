@@ -195,3 +195,6 @@ class Player(object):
         elif potiontype == "Cure":
             self.infected = False
             self.infectedDuration = 0
+        elif potiontype == "Strength":
+            self.strength += bonusAmount
+            print("Your health: " + str(self.strength))

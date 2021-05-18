@@ -12,6 +12,12 @@ class HealthPotion(Consumable):
     self.statBonus = "Health"
     self.bonusAmount = random.randrange(1, 6) * 3
 
+class StrengthPotion(Consumable):
+    def __init__(self):
+        self.duration = random.randrange(1,3)
+        self.statBonus = "Strength"
+        self.bonusAmount = random.randrange(1,3) * 3
+
 class VampirismAntidote(Consumable):
     def __init__(self):
         self.duration = 1
