@@ -6,9 +6,6 @@ class Consumable(object):
     self.statBonus
     self.bonusAmount
 
-  def use(self):
-    return self.duration, self.statBonus, self.bonusAmount
-
 class HealthPotion(Consumable):
   def __init__(self):
     self.duration = 1
