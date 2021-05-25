@@ -8,7 +8,7 @@ def findInList(item, listOfItems):
   return -1
 
 weapons = {'sword' : Sword, 'club' : Club, 'fists' : Fists}
-consumables = {'health potion' : HealthPotion,'strength potion' : StrengthPotion 'vampirism antidote' : VampirismAntidote}
+consumables = {'health potion' : HealthPotion,'strength potion' : StrengthPotion, 'vampirism antidote' : VampirismAntidote}
 
 class Inventory(object):
   def __init__(self):
@@ -20,7 +20,7 @@ class Inventory(object):
       self.consumables[i][0] = consumable
 
     self.finalAttackBonus = 0
-    self.consumedItem = None
+    self.consumedItem = [None] * len(consumables)
 
   def displayWeapons(self):
     print("Weapons:")
@@ -57,38 +57,41 @@ class Inventory(object):
     self.displayConsumables()
     selection = input("Select the consumable you would like to use. ").lower()
     try:
-      if self.consumables[findInList(selection, self.consumables)][1] > 0:
-        self.consumedItem = consumables[selection]()
-        self.consumables[findInList(selection, self.consumables)][1] -= 1
-        print('You have consumed a ' + selection + '.')
-        return
-      else:
-        return
+        if self.consumables[findInList(selection, self.consumables)][1] > 0:
+            for slot in self.consumedItem:
+                if self.consumedItem[slot] is None:
+                    self.consumedItem[slot] = consumables[selection]()
+            self.consumables[findInList(selection, self.consumables)][1] -= 1
+            print('You have consumed a ' + selection + '.')
+            return
+        else:
+            return
 
     except KeyError:
       print('Exiting inventory')
       return
 
   def consumableEffect(self):
-    try:
-      if self.consumedItem.duration > 0:
-        self.consumedItem.duration -= 1
-        if self.consumedItem.statBonus == "Health":
-          print('Health increased by ' + str(self.consumedItem.bonusAmount) + '.')
-          return "Health", self.consumedItem.bonusAmount
-      elif self.consumedItem.statBonus == "Strength":
-          print('Strength increased by ' + str(self.consumedItem.bonusAmount) + '.')
-          return "Strength", self.consumedItem.bonusAmount
-      elif self.consumedItem.statBonus == "Cure":
-          print('You are cured of your vampiritis.')
-          return "Cure", self.consumedItem.bonusAmount
-      else:
-        self.consumedItem = None
-        print('No Bonus')
-        return " ", 0
+      for slot in self.consumedItem:
+        try:
+            if self.consumedItem[slot].duration > 0:
+                self.consumedItem[slot].duration -= 1
+                if self.consumedItem[slot].statBonus == "Health":
+                    print('Health increased by ' + str(self.consumedItem[slot].bonusAmount) + '.')
+                    return "Health", self.consumedItem[slot].bonusAmount
+                elif self.consumedItem[slot].statBonus == "Strength":
+                    print('Strength increased by ' + str(self.consumedItem[slot].bonusAmount) + '.')
+                    return "Strength", self.consumedItem[slot].bonusAmount
+                elif self.consumedItem[slot].statBonus == "Cure":
+                    print('You are cured of your vampiritis.')
+                    return "Cure", self.consumedItem[slot].bonusAmount
+            else:
+                self.consumedItem[slot] = None
+                print('No Bonus')
+                return " ", 0
 
-    except AttributeError:
-      return " ", 0
+        except AttributeError:
+            return " ", 0
 
-    except TypeError:
-        return " ", 0
+        except TypeError:
+            return " ", 0

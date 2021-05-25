@@ -108,6 +108,7 @@ class Player(object):
         self.stamina += 2
         if self.stamina > self.maxStamina:
           self.stamina = self.maxStamina
+          print('Stamina at max.')
         return 0, 0
 
       if attacktype == '4' or attacktype == 'use potion':

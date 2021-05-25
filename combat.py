@@ -4,10 +4,10 @@ enemies = {'orc' : Orc, 'goblin' : Goblin, 'dragon' : Dragon, 'vampire' : Vampir
 
 def combatLoop(type, player, world):
     enemy = enemies[type]()
-    playerDex = player.dexterity
+    playerTurn = player.dexterity > enemy.dexterity
     while enemy.health > 0 and player.health > 0:
-      playerDex = combatOrder(playerDex, player, enemy, type)
-      
+      playerTurn = combatOrder(playerTurn, player, enemy, type)
+
     if enemy.health <= 0:
       print('You won!')
       world.drops_array[player.x][player.y][0] = enemy.dropItem()
@@ -17,45 +17,45 @@ def combatLoop(type, player, world):
       print('You lost.')
       return False
 
-def combatOrder(playerDex, player, enemy, type):
-    if playerDex >= enemy.dexterity:
+def combatOrder(playerTurn, player, enemy, type):
+    if playerTurn:
 
       if player.health > 0:
-        print('Your Health : ' + str(player.health))      
+        print('Your Health : ' + str(player.health))
         print('Your Stamina : ' + str(player.stamina))
 
         attackStat, damage = player.attack()
         if attackStat >= enemy.armorClass:
           print('You hit.')
           enemy.health -= damage
-          playerDex -= 1
-        
+          playerTurn = False
+
         elif attackStat == 0:
-          playerDex -= 1
+          playerTurn = False
 
         else:
           print('You miss.')
-          playerDex -= 1
+          playerTurn = False
 
       else:
-        return playerDex
-      
-    if enemy.dexterity >= playerDex:
+        return playerTurn
+
+    else:
       if enemy.health > 0:
         attackStat, damage = enemy.attack(player)
         if attackStat >= player.armorClass:
           print("The " + type + " hits.")
-          player.health -= damage    
-          enemy.dexterity -= 1
-        
+          player.health -= damage
+          playerTurn = True
+
         elif attackStat == 0:
-          enemy.dexterity -= 1
+          playerTurn = True
 
         else:
-          enemy.dexterity -= 1
+          playerTurn = True
           print("The " + type + " misses.")
 
       else:
-        return playerDex
+        return playerTurn
 
-    return playerDex
+    return playerTurn
