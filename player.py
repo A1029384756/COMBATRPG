@@ -188,14 +188,16 @@ class Player(object):
 
     def applyPotions(self):
         potiontype, bonusAmount = self.inventory.consumableEffect()
-        if potiontype == "Health":
-            self.health += bonusAmount
-            if self.health > self.maxHealth:
-                self.health = self.maxHealth
-            print("Your health: " + str(self.health))
-        elif potiontype == "Cure":
-            self.infected = False
-            self.infectedDuration = 0
-        elif potiontype == "Strength":
-            self.strength += bonusAmount
-            print("Your health: " + str(self.strength))
+        print(potiontype)
+        for i in range(len(potiontype)):
+            if potiontype[i] == "Health":
+                self.health += bonusAmount[i]
+                if self.health > self.maxHealth:
+                    self.health = self.maxHealth
+                print("Your health: " + str(self.health))
+            elif potiontype[i] == "Cure":
+                self.infected = False
+                self.infectedDuration = 0
+            elif potiontype[i] == "Strength":
+                self.strength += bonusAmount[i]
+                print("Your health: " + str(self.strength))
