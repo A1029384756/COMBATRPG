@@ -14,7 +14,11 @@ class WorldSpace(object):
         self.scale = scale
         self.time = 0
         self.night = False
+<<<<<<< HEAD
         enemyProbability = probabilityGenerator(enemies, enemySpawnFreq)
+=======
+        enemyProbability = probabilityGenerator()
+>>>>>>> 7f858e164df83980eb59859447b9a7401e012312
 
     def worldGen(self):
         self.world_array = [[0]*self.scale for i in range(self.scale)]
