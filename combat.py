@@ -14,7 +14,7 @@ def combatLoop(type, player, world):
       return True
 
     elif player.health <= 0:
-      print('You lost.')
+      print('You lost!')
       return False
 
 def combatOrder(playerTurn, player, enemy, type):
