@@ -50,19 +50,6 @@ class WorldSpace(object):
                   if self.enemies[j][1] >= self.enemy_array[i][p]:
                       self.enemy_array[i][p] = self.enemies[j][0]
                       break
-            # if int(self.enemy_array[i][p]) > 98:
-            #   self.enemy_array[i][p] = self.enemies[3]
-            # elif int(self.enemy_array[i][p]) > 88:
-            #   self.enemy_array[i][p] = self.enemies[4]
-            # elif int(self.enemy_array[i][p]) > 78:
-            #   self.enemy_array[i][p] = self.enemies[2]
-            # elif int(self.enemy_array[i][p]) > 50:
-            #   self.enemy_array[i][p] = self.enemies[1]
-            # else:
-            #   self.enemy_array[i][p] = self.enemies[0]
-        for i in range(int(self.scale)):
-          for p in range(int(self.scale)):
-              print(self.enemy_array[i][p])
 
     def consumablesGen(self):
         for i in range(int(self.scale)):
@@ -77,15 +64,8 @@ class WorldSpace(object):
             for j in range(2):
                 for k in range(len(self.consumables)):
                     if self.consumables[k][1] >= self.drops_array[i][p][j]:
-                        print(self.consumables[k][0])
                         self.drops_array[i][p][j] = self.consumables[k][0]
                         break
-                # if int(self.drops_array[i][p][j]) > 80:
-                #     self.drops_array[i][p][j] = self.consumables[2]
-                # elif int(self.drops_array[i][p][j]) > 2:
-                #     self.drops_array[i][p][j] = self.consumables[1]
-                # else:
-                #     self.drops_array[i][p][j] = self.consumables[0]
 
     def getTerrain(self, player):
         return self.world_array[player.x][player.y]
