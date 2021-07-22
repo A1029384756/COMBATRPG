@@ -34,6 +34,7 @@ class Player(object):
 
     def movement(self):
         self.counter += 1
+        self.applyPotions()
 
         if self.infected:
             self.infectedAction()
@@ -138,8 +139,7 @@ class Player(object):
         else:
             self.infectedDuration -= 1
 
-    def checkInventory(self):
-      self.inventory.displayConsumables()
+    def swapWeapon(self):
       if len(self.inventory.weapons) > 0:
         self.inventory.displayWeapons()
         self.inventory.equipWeapon()
@@ -148,18 +148,22 @@ class Player(object):
         return
 
     def decision(self):
-      print("1. Move")
-      print("2. Inventory")
-      selection = input('What would you like to do? ').lower()
+        print("1. Move")
+        print("2. Equip Weapon")
+        print("3. Use Consumable")
+        selection = input('What would you like to do? ').lower()
 
-      if selection == '1' or selection == 'move':
-        self.movement()
+        if selection == '1' or selection == 'move':
+            self.movement()
 
-      elif selection == '2' or selection == 'inventory':
-        self.checkInventory()
+        elif selection == '2' or selection == 'equip weapon':
+            self.swapWeapon()
 
-      else:
-        print('Invalid input')
+        elif selection == '3' or selection == 'use consumable':
+            self.inventory.useConsumable()
+
+        else:
+            print('Invalid input')
 
     def getDrops(self, world):
       return world.drops_array[self.x][self.y][0], world.drops_array[self.x][self.y][1]
@@ -198,6 +202,7 @@ class Player(object):
             elif potiontype[i] == "Cure":
                 self.infected = False
                 self.infectedDuration = 0
+                print("You are cured of vampirism.")
             elif potiontype[i] == "Strength":
                 self.strength += bonusAmount[i]
-                print("Your health: " + str(self.strength))
+                print("Your strength: " + str(self.strength))

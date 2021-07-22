@@ -35,15 +35,12 @@ class WorldSpace(object):
         for i in range(int(self.scale)):
           for p in range(int(self.scale)):
             if i == player.x and p == player.y:
-              self.enemy_array[i][p] = 0
+              self.enemy_array[i][p] = 0.0
             else:
               self.enemy_array[i][p] = random.uniform(0.0,100.0)
         self.enemyAssignment()
 
     def enemyAssignment(self):
-        for i in range(int(self.scale)):
-          for p in range(int(self.scale)):
-              print(self.enemy_array[i][p])
         for i in range(int(self.scale)):
           for p in range(int(self.scale)):
               for j in range(len(self.enemies)):
