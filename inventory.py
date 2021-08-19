@@ -1,4 +1,5 @@
 from weapons import Sword, Club, Fists
+from armor import Leather, HalfPlate
 from consumables import HealthPotion, StrengthPotion, VampirismAntidote
 
 def findInList(item, listOfItems):
@@ -8,12 +9,19 @@ def findInList(item, listOfItems):
   return -1
 
 weapons = {'sword' : Sword, 'club' : Club, 'fists' : Fists}
+armor = {'leather' : Leather, 'half plate' : HalfPlate}
 consumables = {'health potion' : HealthPotion,'strength potion' : StrengthPotion, 'vampirism antidote' : VampirismAntidote}
 
 class Inventory(object):
     def __init__(self):
         self.equippedWeapon = Fists()
+        self.equippedArmor = None
         self.weapons = []
+        self.armor = [[" ", 0] for i in range(len(armor))]
+
+        for i, armor in enumerate(armor):
+          self.armor[i][0] = armor
+
         self.consumables = [[" ", 0] for i in range(len(consumables))]
 
         for i, consumable in enumerate(consumables):
@@ -26,6 +34,16 @@ class Inventory(object):
         print("Weapons:")
         for i in self.weapons:
           print(i)
+
+    def displayArmor(self):
+        print("Armor:")
+        x = 0
+        for i in range(len(self.armor)):
+          if self.consumables[i][1] != 0:
+            print(self.displayArmor[i][0] + "(x" + str(self.armor[i][1]) + ")")
+            x += 1
+        if x == 0:
+          print('You have no armor in your inventory.')
 
     def displayConsumables(self):
         print("Consumables:")
@@ -52,6 +70,28 @@ class Inventory(object):
         except ValueError:
           print('Exiting inventory.')
           return
+
+    def equipArmor(self):
+        self.displayArmor()
+
+        tmp = self.equippedArmor
+
+        selection = input("Select the armor you would like to equip. ").lower()
+        try:
+            if self.armor[findInList(selection, self.armor)][1] > 0:
+                self.equippedArmor = selection
+                self.armor[findInList(selection, self.armor)][1] -= 1
+
+                self.armor[findInList(tmp, self.armor)][1] += 1
+
+                print("You have equipped your " + selection + ".")
+                return
+            else:
+                return
+        except KeyError:
+            print("Exiting inventory")
+            return
+
 
     def useConsumable(self):
         self.displayConsumables()

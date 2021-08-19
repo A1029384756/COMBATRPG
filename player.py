@@ -14,7 +14,7 @@ class Player(object):
       self.maxStamina = 10
       self.dexterity = 3
       self.strength = 6
-      self.armorClass = 14
+      self.armorClass = 10 + self.dexterity
 
       #Placeholder Stats
       self.health = self.maxHealth
@@ -71,22 +71,24 @@ class Player(object):
             print("You have gone too far, turning you around.")
 
     def attack(self):
-      #Apply Conditions
-      self.applyPotions()
+        self.armorClass = 10 + self.dexterity
+        self.armorClass = self.inventory.equippedArmor.modifier + self.armorClass
+        #Apply Conditions
+        self.applyPotions()
 
-      if self.burning:
+        if self.burning:
         self.burningAction()
 
-      if self.paralyzed:
+        if self.paralyzed:
         self.paralyzedAction()
         return 0, 0
 
-      print('1. Light Attack')
-      print('2. Heavy Attack')
-      print('3. Rest')
-      print('4. Use Potion')
-      attacktype = input('Input the attack you would like to make. ').lower()
-      if attacktype == '1' or attacktype == 'light' or attacktype == 'light attack':
+        print('1. Light Attack')
+        print('2. Heavy Attack')
+        print('3. Rest')
+        print('4. Use Potion')
+        attacktype = input('Input the attack you would like to make. ').lower()
+        if attacktype == '1' or attacktype == 'light' or attacktype == 'light attack':
         if self.stamina >= 1:
           print('You light attack.')
           self.stamina -= 1
@@ -95,7 +97,7 @@ class Player(object):
           print('Not enough stamina! You rest.')
           self.stamina += 1
           return 0,0
-      if attacktype == '2' or attacktype == 'heavy' or attacktype == 'heavy attack':
+        if attacktype == '2' or attacktype == 'heavy' or attacktype == 'heavy attack':
         if self.stamina >= 2:
           print('You heavy attack.')
           self.stamina -= 2
@@ -104,7 +106,7 @@ class Player(object):
           print('Not enough stamina! You rest.')
           self.stamina += 1
           return 0, 0
-      if attacktype == '3' or attacktype == 'rest':
+        if attacktype == '3' or attacktype == 'rest':
         print('You rest.')
         self.stamina += 2
         if self.stamina > self.maxStamina:
@@ -112,11 +114,11 @@ class Player(object):
           print('Stamina at max.')
         return 0, 0
 
-      if attacktype == '4' or attacktype == 'use potion':
+        if attacktype == '4' or attacktype == 'use potion':
         self.inventory.useConsumable()
         return 0, 0
 
-      else:
+        else:
         print('Invalid input.')
         return self.attack()
 
