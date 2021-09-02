@@ -1,6 +1,7 @@
 class Armor(object):
-    self.durability
-    self.modifier
+    def __init__(self):
+        self.durability
+        self.modifier
 
 class Leather(Armor):
     def __init__(self):

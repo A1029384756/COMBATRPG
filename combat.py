@@ -46,6 +46,9 @@ def combatOrder(playerTurn, player, enemy, type):
         if attackStat >= player.armorClass:
           print("The " + type + " hits.")
           player.health -= damage
+          player.inventory.equippedArmor.durability -= int(damage * 0.166)
+          if player.inventory.equippedArmor.durability <= 0:
+              player.inventory.equippedArmor = None
           playerTurn = True
 
         elif attackStat == 0:

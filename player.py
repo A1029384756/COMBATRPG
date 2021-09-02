@@ -77,11 +77,11 @@ class Player(object):
         self.applyPotions()
 
         if self.burning:
-        self.burningAction()
+            self.burningAction()
 
         if self.paralyzed:
-        self.paralyzedAction()
-        return 0, 0
+            self.paralyzedAction()
+            return 0, 0
 
         print('1. Light Attack')
         print('2. Heavy Attack')
@@ -89,38 +89,38 @@ class Player(object):
         print('4. Use Potion')
         attacktype = input('Input the attack you would like to make. ').lower()
         if attacktype == '1' or attacktype == 'light' or attacktype == 'light attack':
-        if self.stamina >= 1:
-          print('You light attack.')
-          self.stamina -= 1
-          return random.randrange(1, 20) + (self.strength/2), random.randrange(1, 8) + (self.strength/2) + self.inventory.finalAttackBonus
+            if self.stamina >= 1:
+                print('You light attack.')
+                self.stamina -= 1
+                return random.randrange(1, 20) + (self.strength/2), random.randrange(1, 8) + (self.strength/2) + self.inventory.finalAttackBonus
         else:
-          print('Not enough stamina! You rest.')
-          self.stamina += 1
-          return 0,0
+            print('Not enough stamina! You rest.')
+            self.stamina += 1
+            return 0,0
         if attacktype == '2' or attacktype == 'heavy' or attacktype == 'heavy attack':
-        if self.stamina >= 2:
-          print('You heavy attack.')
-          self.stamina -= 2
-          return random.randrange(1, 20) + (self.strength/2), random.randrange(1, 8) + (self.strength) + self.inventory.finalAttackBonus
+            if self.stamina >= 2:
+                print('You heavy attack.')
+                self.stamina -= 2
+                return random.randrange(1, 20) + (self.strength/2), random.randrange(1, 8) + (self.strength) + self.inventory.finalAttackBonus
         else:
-          print('Not enough stamina! You rest.')
-          self.stamina += 1
-          return 0, 0
+            print('Not enough stamina! You rest.')
+            self.stamina += 1
+            return 0, 0
         if attacktype == '3' or attacktype == 'rest':
-        print('You rest.')
-        self.stamina += 2
-        if self.stamina > self.maxStamina:
-          self.stamina = self.maxStamina
-          print('Stamina at max.')
-        return 0, 0
+            print('You rest.')
+            self.stamina += 2
+            if self.stamina > self.maxStamina:
+                self.stamina = self.maxStamina
+                print('Stamina at max.')
+            return 0, 0
 
         if attacktype == '4' or attacktype == 'use potion':
-        self.inventory.useConsumable()
-        return 0, 0
+            self.inventory.useConsumable()
+            return 0, 0
 
         else:
-        print('Invalid input.')
-        return self.attack()
+            print('Invalid input.')
+            return self.attack()
 
     def burningAction(self):
       if self.burnDuration > 0:
@@ -194,7 +194,6 @@ class Player(object):
 
     def applyPotions(self):
         potiontype, bonusAmount = self.inventory.consumableEffect()
-        print(potiontype)
         for i in range(len(potiontype)):
             if potiontype[i] == "Health":
                 self.health += bonusAmount[i]

@@ -9,17 +9,17 @@ def findInList(item, listOfItems):
   return -1
 
 weapons = {'sword' : Sword, 'club' : Club, 'fists' : Fists}
-armor = {'leather' : Leather, 'half plate' : HalfPlate}
+armors = {'leather' : Leather, 'half plate' : HalfPlate}
 consumables = {'health potion' : HealthPotion,'strength potion' : StrengthPotion, 'vampirism antidote' : VampirismAntidote}
 
 class Inventory(object):
     def __init__(self):
         self.equippedWeapon = Fists()
-        self.equippedArmor = None
+        self.equippedArmor = HalfPlate()
         self.weapons = []
-        self.armor = [[" ", 0] for i in range(len(armor))]
+        self.armor = [[" ", 0] for i in range(len(armors))]
 
-        for i, armor in enumerate(armor):
+        for i, armor in enumerate(armors):
           self.armor[i][0] = armor
 
         self.consumables = [[" ", 0] for i in range(len(consumables))]
