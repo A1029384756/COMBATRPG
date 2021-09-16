@@ -54,8 +54,6 @@ class Player(object):
             #Return exception
             print('Invalid Input')
 
-    #Checks the player location against the world bounds and makes
-    #sure the player does not leave the map
     def worldBounds(self):
         if self.x >= self.playerMaxDist:
             self.x = self.playerMaxDist - 1
@@ -141,27 +139,23 @@ class Player(object):
         else:
             self.infectedDuration -= 1
 
-    def swapWeapon(self):
-      if len(self.inventory.weapons) > 0:
-        self.inventory.displayWeapons()
-        self.inventory.equipWeapon()
-      else:
-        print('You have no weapons in your inventory.')
-        return
-
     def decision(self):
         print("1. Move")
         print("2. Equip Weapon")
-        print("3. Use Consumable")
+        print("3. Equip Armor")
+        print("4. Use Consumable")
         selection = input('What would you like to do? ').lower()
 
         if selection == '1' or selection == 'move':
             self.movement()
 
         elif selection == '2' or selection == 'equip weapon':
-            self.swapWeapon()
+            self.inventory.equipWeapon()
 
-        elif selection == '3' or selection == 'use consumable':
+        elif selection == '3' or selection == 'equip armor':
+            self.inventory.equipArmor()
+
+        elif selection == '4' or selection == 'use consumable':
             self.inventory.useConsumable()
 
         else:
@@ -171,26 +165,28 @@ class Player(object):
       return world.drops_array[self.x][self.y][0], world.drops_array[self.x][self.y][1]
 
     def pickupDrops(self, world, itemType):
-      droppedItem = world.drops_array[self.x][self.y][itemType]
-      if droppedItem == ' ':
-        return
-      print('You found a ' + droppedItem + '.')
-      playerChoice = input('Would you like to pick it up? ').lower()
-      if playerChoice == 'yes':
-        if itemType == 0:
-          self.inventory.weapons.append(droppedItem)
-        elif itemType == 1:
-            for i in range(len(self.inventory.consumables)):
-                if self.inventory.consumables[i][0] == droppedItem:
-                    self.inventory.consumables[i][1] += 1
-        print('You picked up the ' + droppedItem + '.')
-        world.drops_array[self.x][self.y][itemType] = ' '
-        return
-      elif playerChoice == 'no':
-        print('You decided to move on.')
-        return
-      else:
-        print('Invalid input.')
+        droppedItem = world.drops_array[self.x][self.y][itemType]
+        if droppedItem == ' ':
+            return
+        print('You found a ' + droppedItem + '.')
+        playerChoice = input('Would you like to pick it up? ').lower()
+        if playerChoice == 'yes':
+            if itemType == 0:
+                for i in range(len(self.inventory.weapons)):
+                    if self.inventory.weapons[i][0] == droppedItem:
+                        self.inventory.weapons[i][1] += 1
+            elif itemType == 1:
+                for i in range(len(self.inventory.consumables)):
+                    if self.inventory.consumables[i][0] == droppedItem:
+                        self.inventory.consumables[i][1] += 1
+            print('You picked up the ' + droppedItem + '.')
+            world.drops_array[self.x][self.y][itemType] = ' '
+            return
+        elif playerChoice == 'no':
+            print('You decided to move on.')
+            return
+        else:
+            print('Invalid input.')
 
     def applyPotions(self):
         potiontype, bonusAmount = self.inventory.consumableEffect()
