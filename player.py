@@ -27,6 +27,8 @@ class Player(object):
       self.paralyzeDuration = 0
       self.infected = False
       self.infectedDuration = 0
+      self.persistentPoisoned = False
+      self.persistentPoisonDuration = 0
 
       self.inventory = Inventory()
 
@@ -36,8 +38,7 @@ class Player(object):
         self.counter += 1
         self.applyPotions()
 
-        if self.infected:
-            self.infectedAction()
+        self.statusEffects(1)
 
         print('W. | North')
         print('S. | South')
@@ -74,36 +75,35 @@ class Player(object):
         #Apply Conditions
         self.applyPotions()
 
-        if self.burning:
-            self.burningAction()
+        self.statusEffects(0)
 
         if self.paralyzed:
-            self.paralyzedAction()
-            return 0, 0
+            return 0,0
 
         print('1. Light Attack')
         print('2. Heavy Attack')
         print('3. Rest')
         print('4. Use Potion')
+        print('5. Run Away')
         attacktype = input('Input the attack you would like to make. ').lower()
         if attacktype == '1' or attacktype == 'light' or attacktype == 'light attack':
             if self.stamina >= 1:
                 print('You light attack.')
                 self.stamina -= 1
                 return random.randrange(1, 20) + (self.strength/2), random.randrange(1, 8) + (self.strength/2) + self.inventory.finalAttackBonus
-        else:
-            print('Not enough stamina! You rest.')
-            self.stamina += 1
-            return 0,0
+            else:
+                print('Not enough stamina! You rest.')
+                self.stamina += 1
+                return 0,0
         if attacktype == '2' or attacktype == 'heavy' or attacktype == 'heavy attack':
             if self.stamina >= 2:
                 print('You heavy attack.')
                 self.stamina -= 2
                 return random.randrange(1, 20) + (self.strength/2), random.randrange(1, 8) + (self.strength) + self.inventory.finalAttackBonus
-        else:
-            print('Not enough stamina! You rest.')
-            self.stamina += 1
-            return 0, 0
+            else:
+                print('Not enough stamina! You rest.')
+                self.stamina += 1
+                return 0, 0
         if attacktype == '3' or attacktype == 'rest':
             print('You rest.')
             self.stamina += 2
@@ -111,33 +111,43 @@ class Player(object):
                 self.stamina = self.maxStamina
                 print('Stamina at max.')
             return 0, 0
-
-        if attacktype == '4' or attacktype == 'use potion':
+        if attacktype == '4' or attacktype == 'potion' or attacktype == 'use potion':
             self.inventory.useConsumable()
             return 0, 0
-
+        if attacktype == '5' or attacktype == 'run' or attacktype == 'run away':
+            print('You try to run away and...')
+            return -1, 0
         else:
             print('Invalid input.')
             return self.attack()
 
-    def burningAction(self):
-      if self.burnDuration > 0:
-        self.health -= 5
-        self.burnDuration -= 1
-      else:
-        self.burning = False
+    def statusEffects(self, type):
+        if type == 0: #Combat statusEffect
+            if self.burning:
+                if self.burnDuration > 0:
+                    self.health -= 5
+                    self.burnDuration -= 1
+                else:
+                    self.burning = False
 
-    def paralyzedAction(self):
-      if self.paralyzeDuration <= 0:
-        self.paralyzed = False
-      else:
-        self.paralyzeDuration -= 1
+            if self.paralyzed:
+                if self.paralyzeDuration <= 0:
+                    self.paralyzed = False
+                else:
+                    self.paralyzeDuration -= 1
 
-    def infectedAction(self):
-        if self.infectedDuration <= 0:
-            self.infected = False
-        else:
-            self.infectedDuration -= 1
+        if type == 1: #Movement statusEffect
+            if self.infectedDuration <= 0:
+                self.infected = False
+            else:
+                self.infectedDuration -= 1
+
+        if self.persistentPoisoned:
+            if self.persistentPoisonDuration <= 0:
+                self.persistentPoisoned = False
+            else:
+                self.health -= 5
+                self.persistentPoisonDuration -= 1
 
     def decision(self):
         print("1. Move")
