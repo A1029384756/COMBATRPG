@@ -80,6 +80,8 @@ class Player(object):
         if self.paralyzed:
             return 0,0
 
+        self.displayStats()
+
         print('1. Light Attack')
         print('2. Heavy Attack')
         print('3. Rest')
@@ -115,8 +117,15 @@ class Player(object):
             self.inventory.useConsumable()
             return 0, 0
         if attacktype == '5' or attacktype == 'run' or attacktype == 'run away':
-            print('You try to run away and...')
-            return -1, 0
+            if self.stamina >= 4:
+                self.stamina -= 4
+                print('You try to run away and...')
+                return -1, 0
+            else:
+                self.stamina += 1
+                print("Not enough stamina, you decide to rest.")
+                return 0, 0
+
         else:
             print('Invalid input.')
             return self.attack()
@@ -127,12 +136,14 @@ class Player(object):
                 if self.burnDuration > 0:
                     self.health -= 5
                     self.burnDuration -= 1
+                    print("You take 5 points of fire damage.")
                 else:
                     self.burning = False
 
             if self.paralyzed:
                 if self.paralyzeDuration <= 0:
                     self.paralyzed = False
+                    print("You are paralyzed and cannot move.")
                 else:
                     self.paralyzeDuration -= 1
 
@@ -141,6 +152,7 @@ class Player(object):
                 self.infected = False
             else:
                 self.infectedDuration -= 1
+                print("You have " + str(self.infectedDuration) + " days until you succumb to vampiritis.")
 
         if self.persistentPoisoned:
             if self.persistentPoisonDuration <= 0:
@@ -148,12 +160,14 @@ class Player(object):
             else:
                 self.health -= 5
                 self.persistentPoisonDuration -= 1
+                print("You take 5 points of poison damage.")
 
     def decision(self):
         print("1. Move")
         print("2. Equip Weapon")
         print("3. Equip Armor")
         print("4. Use Consumable")
+        print("5. View Stats")
         selection = input('What would you like to do? ').lower()
 
         if selection == '1' or selection == 'move':
@@ -167,6 +181,9 @@ class Player(object):
 
         elif selection == '4' or selection == 'use consumable':
             self.inventory.useConsumable()
+
+        elif selection == '5' or selection == 'view stats':
+            self.displayStats()
 
         else:
             print('Invalid input')
@@ -213,3 +230,11 @@ class Player(object):
             elif potiontype[i] == "Strength":
                 self.strength += bonusAmount[i]
                 print("Your strength: " + str(self.strength))
+
+    def displayStats(self):
+        print()
+        print("Stats:")
+        print("Health: " + str(self.health))
+        print("Stamina: " + str(self.stamina))
+        print("Dexterity: " + str(self.dexterity))
+        print()

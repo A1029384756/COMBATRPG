@@ -27,9 +27,6 @@ def combatOrder(playerTurn, player, enemy, type):
         playerTurn = 0
 
         if player.health > 0:
-            print('Your Health : ' + str(player.health))
-            print('Your Stamina : ' + str(player.stamina))
-
             attackStat, damage = player.attack()
             if attackStat >= enemy.armorClass:
               print('You hit.')
@@ -77,6 +74,6 @@ def combatOrder(playerTurn, player, enemy, type):
               return playerTurn
 
         elif playerTurn == 0:
-        return playerTurn
+            return playerTurn
 
     return playerTurn

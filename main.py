@@ -1,3 +1,4 @@
+import engine
 from player import Player
 from world import WorldSpace
 from combat import combatLoop
@@ -11,8 +12,8 @@ world.terrainGen()
 world.enemyGeneration(player)
 world.consumablesGen()
 
-
 while True:
+    engine.clearScreen()
     if player.infected and player.infectedDuration == 0:
         print("You have succumbed to vampiritis. Game over.")
         break
