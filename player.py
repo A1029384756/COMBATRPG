@@ -1,4 +1,5 @@
 import random
+import engine
 from inventory import Inventory
 
 class Player(object):
@@ -70,6 +71,7 @@ class Player(object):
             print("You have gone too far, turning you around.")
 
     def attack(self):
+        #engine.clearScreen()
         self.armorClass = 10 + self.dexterity
         self.armorClass = self.inventory.equippedArmor.modifier + self.armorClass
         #Apply Conditions
@@ -183,6 +185,7 @@ class Player(object):
             self.inventory.useConsumable()
 
         elif selection == '5' or selection == 'view stats':
+            engine.clearScreen()
             self.displayStats()
 
         else:
@@ -232,9 +235,9 @@ class Player(object):
                 print("Your strength: " + str(self.strength))
 
     def displayStats(self):
-        print()
         print("Stats:")
         print("Health: " + str(self.health))
         print("Stamina: " + str(self.stamina))
         print("Dexterity: " + str(self.dexterity))
         print()
+        input()

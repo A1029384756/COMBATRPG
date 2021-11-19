@@ -6,11 +6,14 @@ def clearScreen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def drawWorld(world, player):
-    for i in range(int(world.scale)):
-        for j in range(int(world.scale)):
-            terrain = terrainMappings[world.world_array[i][j]]
-            terrain = textSpacing(terrain, 3)
-            print(terrain, end = " ")
+    for y in range(int(world.scale)):
+        for x in range(int(world.scale)):
+            if player.x == x and player.y == y:
+                tile = "X"
+            else:
+                tile = terrainMappings[world.world_array[x][y]]
+            tile = textSpacing(tile, 3)
+            print(tile, end = " ")
         print()
     return 0
 

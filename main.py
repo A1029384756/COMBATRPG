@@ -46,9 +46,11 @@ if __name__ == "__main__":
             if victory == 1:
                 world.clearEnemy(player)
                 player.pickupDrops(world, 1)
+                engine.drawWorld(world, player)
                 player.decision()
             elif victory == 0:
                 print('Game Over')
                 break
             elif victory == -1:
+                engine.drawWorld(world, player)
                 player.decision()
